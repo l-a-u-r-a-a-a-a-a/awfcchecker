@@ -27,4 +27,5 @@ jobs:
         if: hashFiles('news-alert.md') != ''
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue create --title "Slegers news alert: $(date -u '+%d %b %H:%M') UTC" --body-file news-alert.md --assignee "${{ github.repository_owner }}"
+        run: |
+          gh issue create --title "Slegers news alert - $(date -u '+%d %b %H:%M') UTC" --body-file news-alert.md --assignee "${{ github.repository_owner }}"
