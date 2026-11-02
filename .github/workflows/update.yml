@@ -5,6 +5,8 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+  issues: write
+concurrency: update
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -14,8 +16,15 @@ jobs:
         with:
           node-version: 20
       - run: node scripts/update.mjs
-      - run: |
+      - run: node scripts/news.mjs
+      - name: Commit changes
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data.json
+          git add data.json news-seen.json
           git diff --cached --quiet || (git commit -m "Update data" && git push)
+      - name: Email news alert (via GitHub issue)
+        if: hashFiles('news-alert.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue create --title "Slegers news alert: $(date -u '+%d %b %H:%M') UTC" --body-file news-alert.md --assignee "${{ github.repository_owner }}"
