@@ -78,7 +78,7 @@ async function results(code, teamId) {
 }
 
 const out = { ...prev };
-try { Object.assign(out, await coachStatus(), { coachCheckedAt: new Date().toISOString() }); }
+try { Object.assign(out, await coachStatus()); }
 catch (e) { console.error("coach:", e.message); }
 for (const [key, code] of Object.entries(LEAGUES)) {
   try { out[key] = await standing(code); } catch (e) { console.error(key + ":", e.message); }
@@ -86,7 +86,13 @@ for (const [key, code] of Object.entries(LEAGUES)) {
   catch (e) { console.error(key + " matches:", e.message); }
 }
 if (typeof override.gone === "boolean") out.gone = override.gone;
-out.updatedAt = new Date().toISOString();
-
-await writeFile("data.json", JSON.stringify(out, null, 2) + "\n");
-console.log(out);
+// Only rewrite (and so only commit) when something actually changed.
+const strip = ({ updatedAt, coachCheckedAt, ...rest }) => JSON.stringify(rest);
+if (strip(out) === strip(prev)) {
+  console.log("No changes");
+} else {
+  out.updatedAt = new Date().toISOString();
+  delete out.coachCheckedAt;
+  await writeFile("data.json", JSON.stringify(out, null, 2) + "\n");
+  console.log(out);
+}

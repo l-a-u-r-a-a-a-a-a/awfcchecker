@@ -62,7 +62,7 @@ fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   document.getElementById("tables").innerHTML = card("Women's Super League", d.wsl) + card("Champions League", d.ucl) +
     `<div class="card total"><h2>Season so far (WSL + UWCL)</h2>${rec(sum)}${form(all)}</div>`;
   if (d.updatedAt) document.getElementById("foot").textContent =
-    "Last checked " + new Date(d.updatedAt).toLocaleString("en-GB", { dateStyle:"medium", timeStyle:"short" }) + ". Unofficial fan site, not affiliated with Arsenal FC.";
+    "Last changed " + new Date(d.updatedAt).toLocaleString("en-GB", { dateStyle:"medium", timeStyle:"short" }) + ". Unofficial fan site, not affiliated with Arsenal FC.";
 }).catch(() => { document.getElementById("answer").textContent = "NO"; });
 </script>
 </body>
