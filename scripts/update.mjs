@@ -86,13 +86,11 @@ for (const [key, code] of Object.entries(LEAGUES)) {
   catch (e) { console.error(key + " matches:", e.message); }
 }
 if (typeof override.gone === "boolean") out.gone = override.gone;
-// Only rewrite (and so only commit) when something actually changed.
-const strip = ({ updatedAt, coachCheckedAt, ...rest }) => JSON.stringify(rest);
-if (strip(out) === strip(prev)) {
-  console.log("No changes");
-} else {
-  out.updatedAt = new Date().toISOString();
-  delete out.coachCheckedAt;
-  await writeFile("data.json", JSON.stringify(out, null, 2) + "\n");
-  console.log(out);
-}
+// updatedAt moves only when the data changes; checkedAt moves on every run.
+const strip = ({ updatedAt, checkedAt, coachCheckedAt, ...rest }) => JSON.stringify(rest);
+const changed = strip(out) !== strip(prev);
+delete out.coachCheckedAt;
+if (changed) out.updatedAt = new Date().toISOString();
+out.checkedAt = new Date().toISOString();
+await writeFile("data.json", JSON.stringify(out, null, 2) + "\n");
+console.log(changed ? out : "No data changes (checkedAt bumped)");
