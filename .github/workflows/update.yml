@@ -1,4 +1,7 @@
 name: Update data
+# Self-restarting loop: each run checks, waits ~10 minutes, then starts the next run.
+# The schedule is only a backup to restart the loop if it ever stops.
+# To stop the loop: Actions -> Update data -> "..." -> Disable workflow.
 on:
   schedule:
     - cron: "3-59/10 * * * *"
@@ -6,10 +9,15 @@ on:
 permissions:
   contents: write
   issues: write
-concurrency: update
+  actions: write
+# At most one run going plus one waiting, so the loop can never multiply.
+concurrency:
+  group: update
+  cancel-in-progress: false
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,10 +30,19 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data.json news-seen.json
-          git diff --cached --quiet || (git commit -m "Check data" && git push)
+          git diff --cached --quiet && exit 0
+          git commit -m "Check data"
+          git pull --rebase origin "$GITHUB_REF_NAME" && git push
       - name: Email news alert (via GitHub issue)
         if: hashFiles('news-alert.md') != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh issue create --title "Slegers news alert - $(date -u '+%d %b %H:%M') UTC" --body-file news-alert.md --assignee "${{ github.repository_owner }}"
+      - name: Wait, then start the next check
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sleep 540
+          gh workflow run update.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
