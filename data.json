@@ -1,7 +1,125 @@
 {
   "gone": false,
   "listedCoach": "Renée Slegers",
-  "wsl": null,
-  "ucl": null,
-  "updatedAt": null
+  "wsl": {
+    "teamId": "19973",
+    "competition": "English Women's Super League",
+    "group": null,
+    "position": 7,
+    "of": 14,
+    "played": 8,
+    "won": 2,
+    "drawn": 4,
+    "lost": 2,
+    "gd": -1,
+    "points": 10,
+    "season": "2026-27 English Women's Super League",
+    "matches": [
+      {
+        "date": "2026-09-06T11:00Z",
+        "opponent": "Brighton & Hove Albion",
+        "home": false,
+        "for": 1,
+        "against": 0,
+        "result": "W"
+      },
+      {
+        "date": "2026-09-13T13:45Z",
+        "opponent": "Crystal Palace",
+        "home": true,
+        "for": 0,
+        "against": 0,
+        "result": "D"
+      },
+      {
+        "date": "2026-09-19T16:30Z",
+        "opponent": "Manchester United",
+        "home": true,
+        "for": 1,
+        "against": 1,
+        "result": "D"
+      },
+      {
+        "date": "2026-09-27T15:30Z",
+        "opponent": "Chelsea",
+        "home": false,
+        "for": 0,
+        "against": 1,
+        "result": "L"
+      },
+      {
+        "date": "2026-10-04T15:30Z",
+        "opponent": "Manchester City",
+        "home": false,
+        "for": 2,
+        "against": 4,
+        "result": "L"
+      },
+      {
+        "date": "2026-10-17T11:45Z",
+        "opponent": "Birmingham City",
+        "home": true,
+        "for": 1,
+        "against": 1,
+        "result": "D"
+      },
+      {
+        "date": "2026-10-24T11:45Z",
+        "opponent": "Tottenham Hotspur",
+        "home": false,
+        "for": 2,
+        "against": 1,
+        "result": "W"
+      },
+      {
+        "date": "2026-11-01T12:00Z",
+        "opponent": "Aston Villa",
+        "home": true,
+        "for": 1,
+        "against": 1,
+        "result": "D"
+      }
+    ]
+  },
+  "ucl": {
+    "teamId": "19973",
+    "competition": "UEFA Women's Champions League",
+    "group": null,
+    "position": 3,
+    "of": 18,
+    "played": 3,
+    "won": 2,
+    "drawn": 1,
+    "lost": 0,
+    "gd": 4,
+    "points": 7,
+    "season": "2026-27 UEFA Women's Champions League",
+    "matches": [
+      {
+        "date": "2026-09-22T19:00Z",
+        "opponent": "HB Køge",
+        "home": true,
+        "for": 1,
+        "against": 0,
+        "result": "W"
+      },
+      {
+        "date": "2026-09-30T16:45Z",
+        "opponent": "Paris FC",
+        "home": false,
+        "for": 2,
+        "against": 2,
+        "result": "D"
+      },
+      {
+        "date": "2026-10-28T20:00Z",
+        "opponent": "Benfica",
+        "home": true,
+        "for": 3,
+        "against": 0,
+        "result": "W"
+      }
+    ]
+  },
+  "updatedAt": "2026-11-02T10:56:48.211Z"
 }
