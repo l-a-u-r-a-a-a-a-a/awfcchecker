@@ -34,6 +34,7 @@ async function standing(code) {
     if (!e) continue;
     const s = Object.fromEntries(e.stats.map((x) => [x.name, x.value]));
     return {
+      teamId: e.team.id,
       competition: j.name ?? code,
       group: groups.length > 1 ? g.name : null,
       position: s.rank,
@@ -50,11 +51,39 @@ async function standing(code) {
   return null; // Arsenal not in this competition / not started
 }
 
+// Completed matches for Arsenal in one competition, oldest first.
+async function results(code, teamId) {
+  const j = await getJson(`https://site.api.espn.com/apis/site/v2/sports/soccer/${code}/teams/${teamId}/schedule`);
+  const score = (c) => Number(typeof c.score === "object" ? c.score?.value ?? c.score?.displayValue : c.score);
+  return (j.events ?? [])
+    .map((ev) => {
+      const comp = ev.competitions?.[0];
+      if (!comp?.status?.type?.completed && !ev.status?.type?.completed) return null;
+      const us = comp.competitors.find((c) => String(c.team?.id) === String(teamId));
+      const them = comp.competitors.find((c) => c !== us);
+      if (!us || !them) return null;
+      const f = score(us), a = score(them);
+      if (Number.isNaN(f) || Number.isNaN(a)) return null;
+      return {
+        date: ev.date,
+        opponent: them.team.displayName,
+        home: us.homeAway === "home",
+        for: f,
+        against: a,
+        result: f > a ? "W" : f < a ? "L" : "D",
+      };
+    })
+    .filter(Boolean)
+    .sort((x, y) => x.date.localeCompare(y.date));
+}
+
 const out = { ...prev };
 try { Object.assign(out, await coachStatus(), { coachCheckedAt: new Date().toISOString() }); }
 catch (e) { console.error("coach:", e.message); }
 for (const [key, code] of Object.entries(LEAGUES)) {
   try { out[key] = await standing(code); } catch (e) { console.error(key + ":", e.message); }
+  try { if (out[key]?.teamId) out[key].matches = await results(code, out[key].teamId); }
+  catch (e) { console.error(key + " matches:", e.message); }
 }
 if (typeof override.gone === "boolean") out.gone = override.gone;
 out.updatedAt = new Date().toISOString();

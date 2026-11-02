@@ -20,6 +20,14 @@
   .pos small { font-size:1rem; }
   .rec { display:flex; justify-content:space-around; font-size:1.4rem; margin-top:8px; }
   .rec span { display:block; font-family:system-ui,sans-serif; font-size:.75rem; font-weight:700; }
+  .form { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-top:14px; }
+  .dot { position:relative; width:30px; height:30px; border-radius:50%; display:grid; place-items:center;
+         font-size:.85rem; color:var(--white); cursor:default; outline:none; }
+  .dot.W { background:#1a9a4a; } .dot.D { background:#8a8f98; } .dot.L { background:var(--red); }
+  .total .dot.L { box-shadow:0 0 0 2px var(--white); }
+  .dot .tip { display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%);
+         background:#111; color:#fff; font:600 .8rem/1.3 system-ui,sans-serif; padding:6px 10px; white-space:nowrap; z-index:2; }
+  .dot:hover .tip, .dot:focus .tip { display:block; }
   .total { background:var(--navy); color:var(--white); grid-column:1/-1; }
   .total h2 { color:var(--white); }
   footer { margin-top:auto; padding-top:32px; font-family:system-ui,sans-serif; font-size:.8rem; opacity:.85; }
@@ -35,10 +43,13 @@
 const ord = n => n + (["th","st","nd","rd"][(n%100-20)%10] || ["th","st","nd","rd"][n%100] || "th");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const rec = t => `<div class="rec"><div>${t.won}<span>WON</span></div><div>${t.drawn}<span>DRAWN</span></div><div>${t.lost}<span>LOST</span></div></div>`;
+const fmtDate = d => new Date(d).toLocaleDateString("en-GB", { day:"numeric", month:"short" });
+const form = ms => !ms?.length ? "" : `<div class="form">${ms.map(m => `<div class="dot ${m.result}" tabindex="0">${m.result}<span class="tip">${
+  esc(m.comp ? m.comp + " · " : "")}${fmtDate(m.date)}<br>${m.home ? `Arsenal ${m.for}-${m.against} ${esc(m.opponent)}` : `${esc(m.opponent)} ${m.against}-${m.for} Arsenal`}</span></div>`).join("")}</div>`;
 const card = (title, t) => !t ? `<div class="card"><h2>${title}</h2><div class="pos">–</div><p>No table yet</p></div>` :
   `<div class="card"><h2>${title}${t.group ? " · " + esc(t.group) : ""}</h2>
    <div class="pos">${ord(t.position)}<small> of ${t.of}</small></div>
-   <p>${t.points} pts · ${t.played} played · GD ${t.gd > 0 ? "+" : ""}${t.gd}</p>${rec(t)}</div>`;
+   <p>${t.points} pts · ${t.played} played · GD ${t.gd > 0 ? "+" : ""}${t.gd}</p>${rec(t)}${form(t.matches)}</div>`;
 
 fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   document.getElementById("answer").textContent = d.gone ? "YES" : "NO";
@@ -46,8 +57,10 @@ fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
     ? `Arsenal's head coach is now listed as ${d.listedCoach || "someone else"}.`
     : "Renée Slegers is still Arsenal Women head coach.";
   const sum = ["won","drawn","lost"].reduce((o,k) => (o[k] = (d.wsl?.[k]||0) + (d.ucl?.[k]||0), o), {});
+  const all = [...(d.wsl?.matches||[]).map(m => ({...m, comp:"WSL"})), ...(d.ucl?.matches||[]).map(m => ({...m, comp:"UWCL"}))]
+    .sort((a,b) => a.date.localeCompare(b.date));
   document.getElementById("tables").innerHTML = card("Women's Super League", d.wsl) + card("Champions League", d.ucl) +
-    `<div class="card total"><h2>Season so far (WSL + UWCL)</h2>${rec(sum)}</div>`;
+    `<div class="card total"><h2>Season so far (WSL + UWCL)</h2>${rec(sum)}${form(all)}</div>`;
   if (d.updatedAt) document.getElementById("foot").textContent =
     "Last checked " + new Date(d.updatedAt).toLocaleString("en-GB", { dateStyle:"medium", timeStyle:"short" }) + ". Unofficial fan site, not affiliated with Arsenal FC.";
 }).catch(() => { document.getElementById("answer").textContent = "NO"; });
