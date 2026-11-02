@@ -23,7 +23,10 @@
   body { background:var(--red); color:var(--white); font-family:"Arial Black",Impact,system-ui,sans-serif; font-weight:900;
          min-height:100vh; display:flex; flex-direction:column; align-items:center; text-align:center; padding:6vh 16px 32px; }
   h1 { font-size:clamp(1rem,3vw,1.5rem); letter-spacing:.05em; text-transform:uppercase; }
-  #answer { font-size:clamp(7rem,32vw,22rem); line-height:1; margin:2vh 0 1vh; text-shadow:.05em .05em 0 var(--navy); }
+  #answer { font-size:clamp(7rem,32vw,22rem); line-height:1; margin:2vh 0 1vh; text-shadow:.05em .05em 0 var(--navy); white-space:nowrap; }
+  @media (max-width:600px) {
+    h1 { font-size:6vw; line-height:1.2; letter-spacing:.02em; white-space:nowrap; }
+  }
   #sub { font-family:system-ui,sans-serif; font-weight:700; font-size:1.1rem; margin-bottom:6vh; }
   .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; width:100%; max-width:760px; }
   .card { background:var(--white); color:var(--navy); border-bottom:8px solid var(--gold); padding:20px; }
@@ -46,7 +49,7 @@
 </style>
 </head>
 <body>
-  <h1>Has Renée Slegers resigned or been sacked?</h1>
+  <h1>Has Renée Slegers<br>resigned or been sacked?</h1>
   <div id="answer">…</div>
   <p id="sub"></p>
   <div class="grid" id="tables"></div>
@@ -63,8 +66,21 @@ const card = (title, t) => !t ? `<div class="card"><h2>${title}</h2><div class="
    <div class="pos">${ord(t.position)}<small> of ${t.of}</small></div>
    <p>${t.points} pts · ${t.played} played · GD ${t.gd > 0 ? "+" : ""}${t.gd}</p>${rec(t)}${form(t.matches)}</div>`;
 
+// On phones, size YES/NO so it fills 85% of the screen width.
+const ans = document.getElementById("answer");
+function fitAnswer() {
+  ans.style.fontSize = "";
+  if (innerWidth > 600) return;
+  ans.style.display = "inline-block";
+  const w = ans.getBoundingClientRect().width;
+  ans.style.display = "";
+  ans.style.fontSize = parseFloat(getComputedStyle(ans).fontSize) * (innerWidth * 0.85 / w) + "px";
+}
+function setAnswer(t) { ans.textContent = t; fitAnswer(); }
+addEventListener("resize", fitAnswer);
+
 fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
-  document.getElementById("answer").textContent = d.gone ? "YES" : "NO";
+  setAnswer(d.gone ? "YES" : "NO");
   document.getElementById("sub").textContent = d.gone
     ? `Arsenal's head coach is now listed as ${d.listedCoach || "someone else"}.`
     : "Renée Slegers is still Arsenal Women head coach.";
@@ -76,7 +92,7 @@ fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   const ts = d.checkedAt || d.updatedAt;
   if (ts) document.getElementById("foot").textContent =
     "Last checked " + new Date(ts).toLocaleString("en-GB", { dateStyle:"medium", timeStyle:"short" }) + ". Unofficial fan site, not affiliated with Arsenal FC.";
-}).catch(() => { document.getElementById("answer").textContent = "NO"; });
+}).catch(() => setAnswer("NO"));
 </script>
 </body>
 </html>
