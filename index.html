@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Has Renée Resigned Yet?</title>
+<meta name="description" content="Has Renée Slegers left Arsenal Women? Plus where AWFC sit in the WSL and Champions League.">
+<style>
+  :root { --red:#EF0107; --navy:#063672; --gold:#9C824A; --white:#fff; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--red); color:var(--white); font-family:"Arial Black",Impact,system-ui,sans-serif; font-weight:900;
+         min-height:100vh; display:flex; flex-direction:column; align-items:center; text-align:center; padding:6vh 16px 32px; }
+  h1 { font-size:clamp(1rem,3vw,1.5rem); letter-spacing:.05em; text-transform:uppercase; }
+  #answer { font-size:clamp(7rem,32vw,22rem); line-height:1; margin:2vh 0 1vh; text-shadow:.05em .05em 0 var(--navy); }
+  #sub { font-family:system-ui,sans-serif; font-weight:700; font-size:1.1rem; margin-bottom:6vh; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; width:100%; max-width:760px; }
+  .card { background:var(--white); color:var(--navy); border-bottom:8px solid var(--gold); padding:20px; }
+  .card h2 { font-size:1rem; text-transform:uppercase; color:var(--red); }
+  .pos { font-size:4rem; line-height:1.1; }
+  .pos small { font-size:1rem; }
+  .rec { display:flex; justify-content:space-around; font-size:1.4rem; margin-top:8px; }
+  .rec span { display:block; font-family:system-ui,sans-serif; font-size:.75rem; font-weight:700; }
+  .total { background:var(--navy); color:var(--white); grid-column:1/-1; }
+  .total h2 { color:var(--white); }
+  footer { margin-top:auto; padding-top:32px; font-family:system-ui,sans-serif; font-size:.8rem; opacity:.85; }
+</style>
+</head>
+<body>
+  <h1>Has Renée Slegers resigned or been sacked?</h1>
+  <div id="answer">…</div>
+  <p id="sub"></p>
+  <div class="grid" id="tables"></div>
+  <footer id="foot"></footer>
+<script>
+const ord = n => n + (["th","st","nd","rd"][(n%100-20)%10] || ["th","st","nd","rd"][n%100] || "th");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rec = t => `<div class="rec"><div>${t.won}<span>WON</span></div><div>${t.drawn}<span>DRAWN</span></div><div>${t.lost}<span>LOST</span></div></div>`;
+const card = (title, t) => !t ? `<div class="card"><h2>${title}</h2><div class="pos">–</div><p>No table yet</p></div>` :
+  `<div class="card"><h2>${title}${t.group ? " · " + esc(t.group) : ""}</h2>
+   <div class="pos">${ord(t.position)}<small> of ${t.of}</small></div>
+   <p>${t.points} pts · ${t.played} played · GD ${t.gd > 0 ? "+" : ""}${t.gd}</p>${rec(t)}</div>`;
+
+fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
+  document.getElementById("answer").textContent = d.gone ? "YES" : "NO";
+  document.getElementById("sub").textContent = d.gone
+    ? `Arsenal's head coach is now listed as ${d.listedCoach || "someone else"}.`
+    : "Renée Slegers is still Arsenal Women head coach.";
+  const sum = ["won","drawn","lost"].reduce((o,k) => (o[k] = (d.wsl?.[k]||0) + (d.ucl?.[k]||0), o), {});
+  document.getElementById("tables").innerHTML = card("Women's Super League", d.wsl) + card("Champions League", d.ucl) +
+    `<div class="card total"><h2>Season so far (WSL + UWCL)</h2>${rec(sum)}</div>`;
+  if (d.updatedAt) document.getElementById("foot").textContent =
+    "Last checked " + new Date(d.updatedAt).toLocaleString("en-GB", { dateStyle:"medium", timeStyle:"short" }) + ". Unofficial fan site, not affiliated with Arsenal FC.";
+}).catch(() => { document.getElementById("answer").textContent = "NO"; });
+</script>
+</body>
+</html>
