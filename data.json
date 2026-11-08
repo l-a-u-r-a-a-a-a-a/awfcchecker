@@ -5,14 +5,14 @@
     "teamId": "19973",
     "competition": "English Women's Super League",
     "group": null,
-    "position": 8,
+    "position": 6,
     "of": 14,
-    "played": 8,
-    "won": 2,
+    "played": 9,
+    "won": 3,
     "drawn": 4,
     "lost": 2,
-    "gd": -1,
-    "points": 10,
+    "gd": 0,
+    "points": 13,
     "season": "2026-27 English Women's Super League",
     "matches": [
       {
@@ -121,6 +121,6 @@
       }
     ]
   },
-  "updatedAt": "2026-11-07T14:42:11.137Z",
-  "checkedAt": "2026-11-08T13:55:44.699Z"
+  "updatedAt": "2026-11-08T14:05:00.389Z",
+  "checkedAt": "2026-11-08T14:05:00.389Z"
 }
