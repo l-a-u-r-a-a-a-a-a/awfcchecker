@@ -78,6 +78,14 @@
         "for": 1,
         "against": 1,
         "result": "D"
+      },
+      {
+        "date": "2026-11-08T12:00Z",
+        "opponent": "Liverpool",
+        "home": false,
+        "for": 2,
+        "against": 1,
+        "result": "W"
       }
     ]
   },
@@ -121,6 +129,6 @@
       }
     ]
   },
-  "updatedAt": "2026-11-08T14:05:00.389Z",
-  "checkedAt": "2026-11-08T14:14:16.594Z"
+  "updatedAt": "2026-11-08T14:23:32.718Z",
+  "checkedAt": "2026-11-08T14:23:32.718Z"
 }
