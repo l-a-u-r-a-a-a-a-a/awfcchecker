@@ -93,14 +93,14 @@
     "teamId": "19973",
     "competition": "UEFA Women's Champions League",
     "group": null,
-    "position": 5,
+    "position": 4,
     "of": 18,
-    "played": 3,
+    "played": 4,
     "won": 2,
-    "drawn": 1,
+    "drawn": 2,
     "lost": 0,
     "gd": 4,
-    "points": 7,
+    "points": 8,
     "season": "2026-27 UEFA Women's Champions League",
     "matches": [
       {
@@ -129,6 +129,6 @@
       }
     ]
   },
-  "updatedAt": "2026-11-10T22:10:00.955Z",
-  "checkedAt": "2026-11-12T19:41:39.109Z"
+  "updatedAt": "2026-11-12T19:50:56.248Z",
+  "checkedAt": "2026-11-12T19:50:56.248Z"
 }
