@@ -7,12 +7,12 @@
     "group": null,
     "position": 6,
     "of": 14,
-    "played": 9,
+    "played": 10,
     "won": 3,
-    "drawn": 4,
+    "drawn": 5,
     "lost": 2,
     "gd": 0,
-    "points": 13,
+    "points": 14,
     "season": "2026-27 English Women's Super League",
     "matches": [
       {
@@ -137,6 +137,6 @@
       }
     ]
   },
-  "updatedAt": "2026-11-12T20:56:24.739Z",
-  "checkedAt": "2026-11-15T18:20:39.513Z"
+  "updatedAt": "2026-11-15T18:29:59.309Z",
+  "checkedAt": "2026-11-15T18:29:59.309Z"
 }
