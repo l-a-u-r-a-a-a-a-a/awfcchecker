@@ -86,6 +86,14 @@
         "for": 2,
         "against": 1,
         "result": "W"
+      },
+      {
+        "date": "2026-11-15T16:30Z",
+        "opponent": "London City Lionesses",
+        "home": true,
+        "for": 1,
+        "against": 1,
+        "result": "D"
       }
     ]
   },
@@ -137,6 +145,6 @@
       }
     ]
   },
-  "updatedAt": "2026-11-15T18:29:59.309Z",
-  "checkedAt": "2026-11-15T18:29:59.309Z"
+  "updatedAt": "2026-11-15T18:39:22.572Z",
+  "checkedAt": "2026-11-15T18:39:22.572Z"
 }
