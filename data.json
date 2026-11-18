@@ -101,7 +101,7 @@
     "teamId": "19973",
     "competition": "UEFA Women's Champions League",
     "group": null,
-    "position": 5,
+    "position": 6,
     "of": 18,
     "played": 4,
     "won": 2,
@@ -145,6 +145,6 @@
       }
     ]
   },
-  "updatedAt": "2026-11-18T19:46:46.381Z",
-  "checkedAt": "2026-11-18T19:46:46.381Z"
+  "updatedAt": "2026-11-18T19:56:04.313Z",
+  "checkedAt": "2026-11-18T19:56:04.314Z"
 }
