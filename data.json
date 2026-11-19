@@ -142,9 +142,17 @@
         "for": 1,
         "against": 1,
         "result": "D"
+      },
+      {
+        "date": "2026-11-19T20:00Z",
+        "opponent": "OL Lyonnes",
+        "home": true,
+        "for": 0,
+        "against": 2,
+        "result": "L"
       }
     ]
   },
-  "updatedAt": "2026-11-19T22:10:49.993Z",
-  "checkedAt": "2026-11-19T22:10:49.993Z"
+  "updatedAt": "2026-11-19T22:20:08.949Z",
+  "checkedAt": "2026-11-19T22:20:08.949Z"
 }
