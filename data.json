@@ -94,6 +94,14 @@
         "for": 1,
         "against": 1,
         "result": "D"
+      },
+      {
+        "date": "2026-11-22T14:30Z",
+        "opponent": "West Ham United",
+        "home": true,
+        "for": 0,
+        "against": 0,
+        "result": "D"
       }
     ]
   },
@@ -153,6 +161,6 @@
       }
     ]
   },
-  "updatedAt": "2026-11-22T16:29:38.066Z",
-  "checkedAt": "2026-11-22T16:38:55.101Z"
+  "updatedAt": "2026-11-22T16:48:14.113Z",
+  "checkedAt": "2026-11-22T16:48:14.113Z"
 }
