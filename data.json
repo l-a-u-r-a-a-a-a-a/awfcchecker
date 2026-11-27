@@ -1,6 +1,6 @@
 {
-  "gone": false,
-  "listedCoach": "Renée Slegers",
+  "gone": true,
+  "listedCoach": "| manager_title = Head coach",
   "wsl": {
     "teamId": "19973",
     "competition": "English Women's Super League",
@@ -161,6 +161,6 @@
       }
     ]
   },
-  "updatedAt": "2026-11-22T16:48:14.113Z",
-  "checkedAt": "2026-11-27T15:40:24.897Z"
+  "updatedAt": "2026-11-27T15:49:42.417Z",
+  "checkedAt": "2026-11-27T15:49:42.417Z"
 }
