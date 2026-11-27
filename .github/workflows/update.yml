@@ -1,15 +1,10 @@
 name: Update data
-# Self-restarting loop: each run checks, waits ~10 minutes, then starts the next run.
-# The schedule is only a backup to restart the loop if it ever stops.
-# To stop the loop: Actions -> Update data -> "..." -> Disable workflow.
+# Automatic checking is switched off. Run it by hand: Actions -> Update data -> Run workflow.
 on:
-  schedule:
-    - cron: "3-59/10 * * * *"
   workflow_dispatch:
 permissions:
   contents: write
   issues: write
-  actions: write
 # At most one run going plus one waiting, so the loop can never multiply.
 concurrency:
   group: update
@@ -39,10 +34,3 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh issue create --title "Slegers news alert - $(date -u '+%d %b %H:%M') UTC" --body-file news-alert.md --assignee "${{ github.repository_owner }}"
-      - name: Wait, then start the next check
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          sleep 540
-          gh workflow run update.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
