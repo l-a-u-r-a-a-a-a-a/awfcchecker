@@ -82,7 +82,9 @@ addEventListener("resize", fitAnswer);
 fetch("data.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   setAnswer(d.gone ? "YES" : "NO");
   document.getElementById("sub").textContent = d.gone
-    ? `Arsenal's head coach is now listed as ${d.listedCoach || "someone else"}.`
+    ? ((d.coach || d.listedCoach)
+        ? `${d.coach || d.listedCoach} is now Arsenal Women ${d.coachRole || "head coach"}.`
+        : "Renée Slegers is no longer Arsenal Women head coach.")
     : "Renée Slegers is still Arsenal Women head coach.";
   const sum = ["won","drawn","lost"].reduce((o,k) => (o[k] = (d.wsl?.[k]||0) + (d.ucl?.[k]||0), o), {});
   const all = [...(d.wsl?.matches||[]).map(m => ({...m, comp:"WSL"})), ...(d.ucl?.matches||[]).map(m => ({...m, comp:"UWCL"}))]

@@ -1,6 +1,6 @@
 {
   "gone": true,
-  "listedCoach": "| manager_title = Head coach",
+  "listedCoach": null,
   "wsl": {
     "teamId": "19973",
     "competition": "English Women's Super League",
@@ -162,5 +162,7 @@
     ]
   },
   "updatedAt": "2026-11-27T15:49:42.417Z",
-  "checkedAt": "2026-11-27T15:58:59.808Z"
+  "checkedAt": "2026-11-27T15:58:59.808Z",
+  "coach": "Melissa Clarke-Reed",
+  "coachRole": "interim head coach"
 }

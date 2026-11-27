@@ -19,10 +19,11 @@ async function coachStatus() {
   const j = await getJson(
     "https://en.wikipedia.org/w/api.php?action=parse&page=Arsenal_W.F.C.&prop=wikitext&section=0&format=json&formatversion=2"
   );
-  const m = j.parse.wikitext.match(/\|\s*manager\s*=\s*(.+)/i);
-  const listed = m ? m[1].replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, "$1").trim() : null;
-  if (!listed) throw new Error("manager field not found");
-  return { gone: !/slegers/i.test(listed), listedCoach: listed };
+  // [ \t]* (not \s*) so an empty "| manager =" line doesn't swallow the next field.
+  const m = j.parse.wikitext.match(/^[ \t]*\|[ \t]*manager[ \t]*=[ \t]*([^\n]*)/im);
+  if (!m) throw new Error("manager field not found");
+  const listed = m[1].replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, "$1").replace(/<[^>]*>|\{\{[^}]*\}\}/g, "").trim();
+  return { gone: !/slegers/i.test(listed), listedCoach: listed || null };
 }
 
 async function standing(code) {
@@ -86,6 +87,9 @@ for (const [key, code] of Object.entries(LEAGUES)) {
   catch (e) { console.error(key + " matches:", e.message); }
 }
 if (typeof override.gone === "boolean") out.gone = override.gone;
+// Manual coach name/role (e.g. an interim appointment) wins over whatever Wikipedia shows.
+out.coach = override.coach || null;
+out.coachRole = override.coachRole || null;
 // updatedAt moves only when the data changes; checkedAt moves on every run.
 const strip = ({ updatedAt, checkedAt, coachCheckedAt, ...rest }) => JSON.stringify(rest);
 const changed = strip(out) !== strip(prev);
